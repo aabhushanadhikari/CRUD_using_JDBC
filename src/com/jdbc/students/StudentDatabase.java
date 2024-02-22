@@ -22,6 +22,7 @@ public class StudentDatabase {
 			System.out.println("3.Read all the records of the table");
 			System.out.println("4.Read  the records of the table using callable");
 			System.out.println("5. Update the record");
+			System.out.println("6.Delete the record");
 			int choice=Integer.parseInt(sc.nextLine());
 			switch(choice) {
 			case 1:
@@ -38,6 +39,9 @@ public class StudentDatabase {
 				break;
 			case 5:
 				studentDatabase.updateRecords();
+				break;
+			case 6:
+				studentDatabase.deleteRecords();
 				break;
 			default:
 				break;
@@ -162,5 +166,16 @@ public class StudentDatabase {
 		}else {
 			System.out.println("The roll no. that you have entered is not in the table");
 		}
+	}
+	void deleteRecords() throws SQLException{
+		System.out.println("Enter the roll number of the row you want to delete");
+		int rollNumber=Integer.parseInt(sc.nextLine());
+		String sql="delete from students where roll_number = "+rollNumber;
+		Statement statement=connection.createStatement();
+		int rows=statement.executeUpdate(sql);
+		if(rows>0) {
+			System.out.println("The row was deleted successfully");
+		}
+		
 	}
 }
