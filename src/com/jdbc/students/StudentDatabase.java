@@ -111,7 +111,56 @@ public class StudentDatabase {
 			System.out.println("-----------------------------------------------");
 		}
 	}
-	private void updateRecords() {
-		System.out.println("Inside update");
+	private void updateRecords() throws SQLException{
+		System.out.println("Enter the roll no. of the student that you want to update");
+		int rollNumber=Integer.parseInt(sc.nextLine());
+		String sql="Select * from students where roll_number = "+rollNumber;
+		Statement statement=connection.createStatement();
+		ResultSet resultSet=statement.executeQuery(sql);
+		if(resultSet.next()) {
+			System.out.println("Here are the choices");
+			System.out.println("Press 1 for name");
+			System.out.println("Press 2 for percentage");
+			System.out.println("Press 3 for address");
+			String sqlQuery="update students set ";
+			int choice=Integer.parseInt(sc.nextLine());
+			
+			switch(choice) {
+			case 1:
+				System.out.println("Enter the name you want to update : ");
+				String name=sc.nextLine();
+				sqlQuery=sqlQuery+"name = ? where roll_number = "+rollNumber;
+				PreparedStatement preparedStatement=connection.prepareStatement(sqlQuery);
+				preparedStatement.setString(1,name);
+				int rows=preparedStatement.executeUpdate();
+				if(rows>0) {
+					System.out.println("The name was updated successfully");
+				}
+				break;
+			case 2:
+				System.out.println("Enter the new percentage");
+				double percentage=Double.parseDouble(sc.nextLine());
+				sqlQuery=sqlQuery+"percentage = ? where roll_number = "+rollNumber;
+				PreparedStatement preparedStatement2=connection.prepareStatement(sqlQuery);
+				preparedStatement2.setDouble(1, percentage);
+				int rows2=preparedStatement2.executeUpdate();
+				if(rows2>0) {
+					System.out.println("The percentage was updated successfully");
+				}
+				break;
+			case 3:System.out.println("Enter the new address");
+			String address=sc.nextLine();
+			sqlQuery=sqlQuery+"address = ? where roll_number = "+rollNumber;
+			PreparedStatement preparedStatement3=connection.prepareStatement(sqlQuery);
+			preparedStatement3.setString(1, address);
+			int rows3=preparedStatement3.executeUpdate();
+			if(rows3>0) {
+				System.out.println("The address was updated successfully");
+			}
+				break;
+			}
+		}else {
+			System.out.println("The roll no. that you have entered is not in the table");
+		}
 	}
 }
